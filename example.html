@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="./multiProcessing.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        h1,
+        h2,
+        h3,
+        p,
+        b,
+        a {
+            font-family: Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            padding: 20px;
+        }
+
+        b {
+            font-size: 18px;
+        }
+
+        .implementationcode {
+            width: calc(80% + 15px);
+            display: block;
+            float: left;
+            clear: both;
+            border: 1px dashed #cccccc;
+            margin-bottom: 15px;
+        }
+
+        .bigger {
+            width: 60% !important;
+            margin-right: 5px !important;
+        }
+
+        .editorstyle {
+            width: 40%;
+            display: block;
+            float: left;
+            border: 1px solid grey;
+        }
+
+        .outputstyle {
+            width: 40%;
+            margin-left: 15px;
+            display: block;
+            float: left;
+            border: 1px solid grey;
+        }
+
+        #processingoutput_1 {
+            width: 60%;
+            border: 1px solid red;
+        }
+
+        .codeRed {
+            border: 3px solid red;
+            width: 30%;
+        }
+
+        #Xpto {
+            width: 30%;
+            border: 1px solid blue;
+            margin-right: 15px;
+            float: left;
+        }
+
+        .codeBlue {
+            border: 2px dotted blue;
+            width: 50%;
+            float: left;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>About multiProcessing</h1>
+    <br><br>
+    <p>multProcessing creates multiple <a href="https://ace.c9.io/" target='_blank'>ACE editors</a> (embeddable code
+        editor written in javascript) with multiple Processing livecode
+        outputs into your HTML.
+    </p>
+
+    <p>It is a tools designed to help document Processing codes on web pages, which also allows them to be
+        interactive.</p>
+
+    <br>
+    <p>Created by <a target="_blank" href="https://github.com/ranoya">Prof. Guilherme Ranoya</a> in 2019 under a General
+        Public License (GPLv3) while writing his <a target="_blank"
+            href="https://www.ranoya.com/books/public/tecnologiascriativas/">online book on creative
+            technologies</a>
+        (in portuguese).</p>
+
+    <p><a href="https://github.com/ranoya/multiProcessing/blob/main/multiProcessing.js" target="_blank">Source
+            code</a>.</p>
+
+    <span style="display: block; width: 100%; clear: both; height: 50px;"></span>
+
+    <h2>Dependencies</h2>
+    <br><br>
+
+    <p>multiProcessing is dependent on <a href="https://ace.c9.io/" target='_blank'>ACE Editor</a> and <a
+            href="https://github.com/processing-js/processing-js" target='_blank'>Processing.js</a></p>
+
+    <p>They are inserted in the HTML from the first 7 lines of code in the multiProcessing <a
+            href="https://github.com/ranoya/multiProcessing/blob/main/multiProcessing.js" target="_blank">source</a>,
+        both loaded from <a href="https://cdnjs.cloudflare.com" target="_blank">cdnjs.cloudflare.com</a>.
+    </p>
+
+
+    <span style="display: block; width: 100%; clear: both; height: 50px;"></span>
+
+    <h2>multiProcessing Examples</h2>
+    <br><br>
+
+
+
+
+
+    <p><b>Simplest implementation</b></p>
+    <p>A <i>pre</i> element with <span style="text-decoration: underline;">processingeditor</span> <i>class</i> and a
+        <i>targetId</i> property pointing to a <i>iframe</i> element <i>id</i>.</p>
+    <br><br>
+
+    <pre class='processingeditor implementationcode' data-linguagem="html" data-config='{"readOnly":"true"}'>
+&lt;script src=&quot;https://www.ranoya.com/Assets/JSLibs/multiProcessing/multiProcessing.js&quot;&gt;&lt;/script&gt;
+
+&lt;pre class=&#039;processingeditor editorstyle&#039; targetId=&quot;SketchOutput1&quot;&gt;
+void setup() {
+size(150,150);
+background(#78008A);
+frameRate(20);
+}
+
+void draw() {
+fill(#FFFFFF);
+rect(20,20,100,100);
+}
+&lt;/pre&gt;
+
+&lt;iframe id=&quot;SketchOutput1&quot; class=&quot;outputstyle&quot; frameborder=0&gt;&lt;/iframe&gt;</pre>
+
+    <!-- simplest IMPLEMENTATION -->
+    <pre class='processingeditor editorstyle' data-config='{"readOnly":false}' targetId="SketchOutput1">
+void setup() {
+    size(150,150);
+    background(#78008A);
+    frameRate(20);
+}
+
+void draw() {
+    fill(#FFFFFF);
+    rect(20,20,100,100);
+}
+    </pre>
+
+    <iframe id="SketchOutput1" class="outputstyle" frameborder=0></iframe>
+
+
+
+
+
+
+
+
+
+    <span style="display: block; width: 100%; clear: both; height: 100px;"></span>
+
+
+    <p><b>Implementation with predata and postdata</b></p>
+    <p>The same as the simplest form, but using <i>predata_[targetId]</i> for code that must be put before what is
+        inside the editor (<i>pre</i> element), and <i>postdata_[targetId]</i> for what must be after (don't forget to
+        close open brackets!). Usefull for locking or hidding parts of the code.</p>
+    <br><br>
+
+    <pre class='processingeditor implementationcode' data-linguagem="html" data-config='{"readOnly":"true"}'>
+&lt;script src=&quot;https://www.ranoya.com/Assets/JSLibs/multiProcessing/multiProcessing.js&quot;&gt;&lt;/script&gt;
+
+ &lt;script&gt;
+ predata_SketchOutput2 = `
+ void setup() {
+ size(1000,1000);
+ background(#78008A);
+ stroke(255);
+ strokeWeight(10);
+ }
+
+ void draw() {
+ `;
+
+ postdata_SketchOutput2 = `
+ rect(10,10,10,10);
+ }
+ `;
+ &lt;/script&gt;
+
+&lt;pre class=&#039;processingeditor editorstyle&#039; targetId=&quot;SketchOutput2&quot;&gt;
+line(20,20,400,300);
+rect(50,50,40,40);
+&lt;/pre&gt;
+
+&lt;iframe id=&quot;SketchOutput2&quot; class=&quot;outputstyle&quot; frameborder=0&gt;&lt;/iframe&gt;</pre>
+
+    <!-- USING PREDATA AND POSTDATA IMPLEMENTATION -->
+
+    <script>
+        predata_SketchOutput2 = `
+            void setup() {
+                size(1000,1000);
+                background(#78008A);
+                stroke(255);
+                strokeWeight(10);
+            }
+
+            void draw() {
+            `;
+
+        postdata_SketchOutput2 = `
+                rect(10,10,10,10);
+            } 
+            `;
+    </script>
+
+    <pre class='processingeditor editorstyle' targetId='SketchOutput2'>
+line(20,20,400,300);
+rect(50,50,40,40);
+    </pre>
+
+    <iframe id="SketchOutput2" class="outputstyle" frameborder=0></iframe>
+
+
+
+
+    <span style="display: block; width: 100%; clear: both; height: 100px;"></span>
+
+
+    <p><b>No output implementation</b></p>
+    <p>Simply don't declare a <i>targetId</i> in the <i>pre</i> element. And, obviously, no need for the <i>iframe</i>
+        too.</p>
+    <br><br>
+
+    <pre class='processingeditor implementationcode' data-config='{"readOnly":"true"}' data-linguagem="java">
+&lt;script src=&quot;https://www.ranoya.com/Assets/JSLibs/multiProcessing/multiProcessing.js&quot;&gt;&lt;/script&gt;
+
+&lt;pre class=&#039;processingeditor editorstyle&#039;&gt;
+void setup() {
+size(150,150);
+background(#78008A);
+frameRate(20);
+}
+
+void draw() {
+fill(#FFFFFF);
+rect(20,20,100,100);
+}
+&lt;/pre&gt;
+</pre>
+
+    <!-- NO OUTPUT IMPLEMENTATION -->
+
+    <pre class='processingeditor editorstyle' style="border: 1px solid grey;">
+void setup() {
+size(150,150);
+background(#78008A);
+frameRate(20);
+}
+
+void draw() {
+fill(#FFFFFF);
+rect(20,20,100,100);
+}
+</pre>
+
+    <span style="display: block; width: 100%; clear: both; height: 100px;"></span>
+
+
+    <p><b>Changing ACE Editor setup and styling blocks</b></p>
+    <p>Use <i>data-linguagem</i> to set the right code highlight and linter, <i>data-acetheme</i> to set color and
+        editor style,
+        and <i>data-config</i> in the <i>pre</i> element to set options of the ACE Editor.</p>
+    <p>Access <a target="_blank" href="https://ace.c9.io/build/kitchen-sink.html">Aces Kitschen Sink</a> to try all the
+        editor's
+        properties,
+        and <a target="_blank" href="https://github.com/ajaxorg/ace/wiki/Configuring-Ace">this Github Page</a> for how
+        to write setup options.
+        <br><br>
+
+        <pre class='processingeditor implementationcode' data-config='{"readOnly":"true"}' data-linguagem="html">
+&lt;script src=&quot;https://www.ranoya.com/Assets/JSLibs/multiProcessing/multiProcessing.js&quot;&gt;&lt;/script&gt;
+
+&lt;pre class=&#039;processingeditor editorstyle bigger&#039; data-linguagem=&quot;javascript&quot;
+data-acetheme=&quot;cobalt&quot; data-config=&#039;{&quot;highlightActiveLine&quot;:true,
+&quot;selectionStyle&quot;:&quot;line&quot;, &quot;foldStyle&quot;:&quot;markbeginend&quot;,
+&quot;readOnly&quot;:true}&#039;&gt;
+void setup() {
+size(150,150);
+background(#78008A);
+frameRate(20);
+}
+
+void draw() {
+fill(#FFFFFF);
+rect(20,20,100,100);
+}
+&lt;/pre&gt;
+    </pre>
+
+        <pre class='processingeditor editorstyle bigger' data-linguagem="javascript" data-acetheme="cobalt" data-config='{"highlightActiveLine":true, "selectionStyle":"line", "foldStyle":"markbeginend",
+        "readOnly":true}'>
+void setup() {
+size(150,150);
+background(#78008A);
+frameRate(20);
+}
+
+void draw() {
+fill(#FFFFFF);
+rect(20,20,100,100);
+}
+</pre>
+        <span style="display: block; width: 100%; clear: both; height: 30px;"></span>
+
+        <p>You can set global preferences for all editors in the page with the <i>acegeneralconfig</i> object:</p>
+        <br>
+        <pre class='processingeditor implementationcode' style="clear: both;" data-config='{"readOnly":"true"}'
+            data-linguagem="html">
+&lt;script&gt;
+acegeneralconfig = {
+maxLines: Infinity,
+enableBasicAutocompletion: true,
+enableSnippets: true,
+enableLiveAutocompletion: false,
+showPrintMargin: false,
+highlightSelectedWord: true,
+selectionStyle: &quot;text&quot;,
+highlightActiveLine: false,
+cursorStyle: &quot;wide&quot;,
+wrapBehavioursEnabled: true,
+wrap: true
+};
+&lt;/script&gt;
+</pre>
+        <br><br>
+
+        <p style="clear: both;">Only elements with <span style='text-decoration: underline;'>processingeditor</span>
+            <i>class</i> will be
+            transformed into an ACE Editor. You can use this class for styling, or can add other classes to the
+            <i>class</i> property of the element for better styling.</p>
+
+
+        <span style="display: block; width: 100%; clear: both; height: 200px;"></span>
+
+
+
+
+
+
+
+</body>
